@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software de Assistência Social</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
+    <link rel="icon" href="assets/img/kaiadmin/Logo_SPAAS.png" type="image/x-icon" />
+    <!-- Fonts and icons -->
+    <script src="assets/js/plugin/webfont/webfont.min.js"></script>
+    <script src="assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+    <!--   Core JS Files   -->
+    <script src="assets/js/core/jquery-3.7.1.min.js"></script>
+    <script src="assets/js/core/popper.min.js"></script>
+    <script src="assets/js/core/bootstrap.min.js"></script>
+
+    <!-- jQuery Scrollbar -->
+    <script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+    <!-- Chart JS -->
+    <script src="assets/js/plugin/chart.js/chart.min.js"></script>
+
+    <!-- jQuery Sparkline -->
+    <script src="assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- Chart Circle -->
+    <script src="assets/js/plugin/chart-circle/circles.min.js"></script>
+
+    <!-- Datatables -->
+    <script src="assets/js/plugin/datatables/datatables.min.js"></script>
+
+    <!-- Kaiadmin JS -->
+    <script src="assets/js/kaiadmin.min.js"></script>
+    <script>
+        WebFont.load({
+            google: {
+                families: ["Public Sans:300,400,500,600,700"]
+            },
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons",
+                ],
+                urls: ["assets/css/fonts.min.css"],
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            },
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#formLogin').on('submit', function(e) {
+                e.preventDefault();
+
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    url: 'logar.php',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        var res = JSON.parse(response);
+                        if (res.status === 'success') {
+                            swal({
+                                title: 'Sucesso!',
+                                text: res.message,
+                                icon: 'success',
+                                buttons: false,
+                                timer: 4000,
+                            }).then(() => {
+                                window.location.href = res.redirect;
+                            });
+                        } else {
+                            swal({
+                                title: 'Erro',
+                                text: res.message,
+                                icon: 'error',
+                                button: 'OK',
+                            });
+                        }
+                    },
+                    error: function() {
+                        swal({
+                            title: 'Erro',
+                            text: 'Erro ao processar a requisição. Tente novamente.',
+                            icon: 'error',
+                            button: 'OK',
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a2035, #1a2035);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .login-container {
+            background: #fff;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-container h1 {
+            font-size: 1.8rem;
+            color: #1a2035;
+            margin-bottom: 1rem;
+        }
+
+        .login-container img {
+            max-width: 100px;
+            margin-bottom: 1rem;
+        }
+
+        .login-container span {
+            display: block;
+            font-weight: bold;
+            text-align: left;
+            margin: 1rem 0 0.5rem;
+            color: #1a2035;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .login-container input[type="text"]:focus,
+        .login-container input[type="password"]:focus {
+            border-color: #4CAF50;
+            outline: none;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        }
+
+        .login-container input[type="submit"] {
+            background: #4CAF50;
+            color: #fff;
+            font-weight: bold;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+
+        .login-container input[type="submit"]:hover {
+            background: #388E3C;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <img src="assets/img/kaiadmin/Logo_SPAAS.png" alt="Logo SPAAS">
+        <h1>Bem-vindo(a) Assistente Social</h1>
+        <form id="formLogin">
+            <span>CPF</span>
+            <input type="text" name="cpf" placeholder="Insira seu CPF" required />
+
+            <span>Senha</span>
+            <input type="password" name="senha" placeholder="Insira sua senha" required />
+
+            <input type="submit" value="LOGIN" />
+        </form>
+    </div>
+</body>
+
+</html>
